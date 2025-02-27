@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>白何乐觅食</title>
+    <style>
+        canvas {
+            position: relative;
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #000;
+            size: border-box;
+            z-index: 0;
+        }
+        #myimg{
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 100px;
+            width: 1px;
+            height: 1px;
+            border-radius: 100%;
+            border: 2px solid black;
+            text-align: center;
+            transform: translate(-50%,-50%);
+            line-height: 50px;
+            background-color: #c5c5c5;
+        }
+        #start{
+            width: 200px;
+            height: 50px;
+            border-radius: 20px;
+            position: fixed;
+            top: 100px;
+            left: 150px;
+            transform: translate(-50%,-50%);
+            transition: 100ms;
+        }
+        #start:active{
+            width: 210px;
+            height: 55px;
+        }
+        .text1{
+            font-size: xx-large;
+            position: fixed;
+            left: 700px;
+            top: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="myimg">
+        白何乐
+    </div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <text class="text1" id="t"></text>
+    <button id="start">开始</button>
+    <script>
+        const myimg=document.getElementById('myimg');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const start=document.getElementById('start');
+        var juge1=1;
+        if(juge1){
+        start.addEventListener('click',function(){
+            setInterval(give,2000);
+            juge1=0;
+        });
+    }
+        var speed=2;
+        var juge=1;
+        var wid=50,high=50;
+        var x=343,y=7;
+        var count=0;
+        let centry = {
+            x:0,
+            y:0,
+            size: 5,
+            speed: 2,
+            color: 'blue'
+        };
+        var colors=[
+    '#00FF00',
+    '#7700FF',
+    '#FFBB00',
+    '#AA0000',
+    '#0000FF'
+];
+        let eats=[];
+        function give(){
+            eats[count]={
+                x:Math.random()*800,
+                y:Math.random()*600,
+                size:3,
+                color:colors[Math.floor(Math.random()*4)]
+            };
+            count++;
+        }
+        const keys = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+        document.addEventListener('keydown', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = true;
+            }
+        });
+        document.addEventListener('keyup', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = false;
+            }
+        });
+        function update() {
+            if (keys.ArrowUp && centry.y > 0) {
+                centry.y-=centry.speed;
+                y-=speed;
+            }
+            if (keys.ArrowDown && centry.y + centry.size < canvas.height) {
+                centry.y+=centry.speed;
+                y+=speed;
+            }
+            if (keys.ArrowLeft && centry.x > 0) {
+                centry.x-=centry.speed;
+                x-=speed;
+            }
+            if (keys.ArrowRight && centry.x + centry.size < canvas.width) {
+                centry.x+=centry.speed;
+                x+=speed;
+            }
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle = centry.color;
+                ctx.beginPath();
+                ctx.arc(centry.x, centry.y, centry.size, 0, Math.PI*2);
+                ctx.fill(); 
+            eats.forEach((eat,index) => {
+                ctx.fillStyle = eat.color;
+                ctx.beginPath();
+                ctx.arc(eat.x, eat.y, eat.size, 0, Math.PI*2);
+                ctx.fill(); 
+            });
+        }
+        function gameLoop() {
+            update();
+            draw();
+            const a=y+'px';
+            const b=x+'px';
+            const c=wid+'px';
+            const d=high+'px';
+            myimg.style.top=a;
+            myimg.style.left=b;
+            myimg.style.width=c;
+            myimg.style.height=d;
+            eats.forEach((eat,index) => {
+                if(Math.abs(eat.x-centry.x)<wid/2&&Math.abs(eat.y-centry.y)<wid/2&&speed>0){
+                eat.size=0;
+                wid+=15;
+                high+=15;
+                eat.x=-20;
+                eat.y=-20;
+                speed-=0.4;
+                centry.speed-=0.4;
+            }
+            });
+            if(speed<=0.1&&juge) {
+                setTimeout(() => {
+                    alert('白何乐吃的走不动了！');
+                },2000);
+                juge=0;
+            }
+            requestAnimationFrame(gameLoop);
+        }
+        gameLoop();
+    </script>
+</body>
+</html>
