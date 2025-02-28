@@ -1,11 +1,12 @@
 body{
     position: relative;
-    
+    display: flex;
 }
 canvas {
     position: relative;
     display: block;
-    margin: 0 auto;
+    position: fixed;
+    right: 0;
     border: 1px solid #000000;
     size: border-box;
     z-index: 0;
@@ -13,14 +14,15 @@ canvas {
     box-shadow: 0 0 10px gray;
     background-color: white;
 }
+.control-bored{
+    width: 30%;
+    display: grid;
+}
 #start{
     width: 200px;
     height: 50px;
+    margin: 20px auto;
     border-radius: 20px;
-    position: fixed;
-    top: 10%;
-    left: 10%;
-    transform: translate(-50%,-50%);
     transition: 100ms;
 }
 #start:active{
@@ -28,21 +30,17 @@ canvas {
     height: 55px;
 }
 #text1{
-    font-size: xx-large;
-    position: fixed;
-    transform: translate(-50%,0);
-    left: 10%;
-    top: 20%;
+    text-align: center;
+    font-size: x-large;
+    margin-bottom: 50px;
 }
 #show-pro{
-    width: 20%;
+    width: 100%;
     height: 75px;
-    position: fixed;
-    top: 30%;
 }
 .lenth-out{
     height: 25px;
-    width: 100%;
+    width: 90%;
     border: 1px solid black;
     border-radius: 10px;
     overflow: hidden;
@@ -53,10 +51,8 @@ canvas {
     width: 20%;
 }
 #weight{
-    width: 20%;
+    width: 90%;
     height: 75px;
-    position: fixed;
-    top: 40%;
 }
 #weight-lenth-border{
     height: 25px;
@@ -70,4 +66,24 @@ canvas {
     height: 25px;
     width: 0;
     transition: 500ms;
+}
+#endingtext-area{
+    position: fixed;
+    display: flex;
+    width: 0;
+    height: 0;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+#history-area{
+    width: 100%;
+    height: 150px;
+    text-align: center;
+    display: grid;
+    font-size: x-large;
+}
+#history-head{
+    width: 100%;
 }

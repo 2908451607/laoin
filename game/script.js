@@ -1,22 +1,25 @@
-
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const start=document.getElementById('start');
 const show_protect_time=document.getElementById('protect-time');
 const white_weight=document.getElementById('weight-length');
+const ending=document.getElementById('endingtext-area');
+const savedata=localStorage.getItem('history-memor');
+document.getElementById('history').innerHTML=savedata; 
 const g=0.05;
 var second=0,minute=0;
 var settime,timelen;
 start.addEventListener('click',function(){
     const temp=String(minute).padStart(2,'0')+':'+String(second).padStart(2,'0');
     document.getElementById('text1').innerHTML=temp;
-    const settime1=setInterval(give, 100);
+    const settime1=setInterval(give, 50);
     const timelenth=setInterval(memortime,1000);
     settime=settime1;
     timelen=timelenth;
 },{once:true});
 var juge=1;
 var protect_time=0;
+var temp;
 let centry = {
     x:400,
     y:575,
@@ -28,7 +31,7 @@ let protectcircle={
     x:centry.x,
     y:centry.y,
     r:centry.size+20,
-    color:'rgba(140, 253, 255, 0.5)'
+    color:'rgba(140, 253, 255, 0.3)'
 }
 //给小球样式
 let eats=[];
@@ -36,7 +39,7 @@ function give(){
     //id为1为普通球，1以上为技能球
     if(Math.random()>0.05){
         eats.push({
-            x:Math.random()*800,
+            x:Math.random()*1050,
             y:0,
             vy:Math.random()+2+1,
             vx:0,
@@ -52,7 +55,7 @@ function give(){
             vy:Math.random(),
             vx:0,
             size:6,
-            color:'blue',
+            color:'rgba(140, 253, 255, 1)',
             id:2
         });
     }
@@ -62,7 +65,7 @@ function give(){
   
 //存储游戏进行的时间
 function memortime(){
-    const temp=String(minute).padStart(2,'0')+':'+String(second).padStart(2,'0');
+    temp=String(minute).padStart(2,'0')+':'+String(second).padStart(2,'0');
     document.getElementById('text1').innerHTML=temp;
     second++;
     if(second==59){
@@ -137,7 +140,7 @@ function gameLoop() {
         eat.x+=eat.vx;
         eat.vy+=g;
         //吃豆机制
-        if(Math.abs(eat.x-centry.x)<centry.size&&Math.abs(eat.y-centry.y)<centry.size&&centry.speed){
+        if(Math.abs(eat.x-centry.x)<centry.size&&Math.abs(eat.y-centry.y)<centry.size&&centry.speed&&!protect_time){
             if(eat.id==1){
                 eats[index]={};
                 centry.size+=7.5;
@@ -169,10 +172,16 @@ function gameLoop() {
     //胖的走不动路了，游戏结束
     if(centry.speed<=0.1&&juge) {
         setTimeout(() => {
+            ending.style.width='100%';
+            ending.style.height='100%';
+            document.getElementById('endingtext-area').innerHTML='游戏结束';
             alert('白何乐吃的走不动了！');
         },2000);
         juge=0;
         eats.length=0;
+        if(savedata<temp){
+            localStorage.setItem('historymemor',temp);
+        }
         clearInterval(settime);
         clearInterval(timelen);
     }
@@ -184,7 +193,11 @@ setInterval(()=>{
     const length=protect_time/10+'%';
     white_weight.style.width=weightlenth;
     show_protect_time.style.width=length;
-    protectcircle.r=centry.size+20;
+    protectcircle.r=centry.size+10;
     if(protect_time>0)protect_time--;
 },1);
 gameLoop();
+
+
+
+
