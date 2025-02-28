@@ -3,13 +3,14 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const start=document.getElementById('start');
 const show_protect_time=document.getElementById('protect-time');
+const white_weight=document.getElementById('weight-length');
 const g=0.05;
 var second=0,minute=0;
 var settime,timelen;
 start.addEventListener('click',function(){
     const temp=String(minute).padStart(2,'0')+':'+String(second).padStart(2,'0');
     document.getElementById('text1').innerHTML=temp;
-    const settime1=setInterval(give,200);
+    const settime1=setInterval(give, 100);
     const timelenth=setInterval(memortime,1000);
     settime=settime1;
     timelen=timelenth;
@@ -20,7 +21,7 @@ let centry = {
     x:400,
     y:575,
     size: 25,
-    speed: 2,
+    speed: 5,
     color: 'tan'
 };
 let protectcircle={
@@ -33,11 +34,11 @@ let protectcircle={
 let eats=[];
 function give(){
     //id为1为普通球，1以上为技能球
-    if(Math.random()>0.5){
+    if(Math.random()>0.05){
         eats.push({
             x:Math.random()*800,
             y:0,
-            vy:Math.random(),
+            vy:Math.random()+2+1,
             vx:0,
             size:3,
             color:'rgb(255, 187, 1)',
@@ -76,7 +77,8 @@ const keys = {
     ArrowUp: false,
     ArrowDown: false,
     ArrowLeft: false,
-    ArrowRight: false
+    ArrowRight: false,
+    a:false
 };
 document.addEventListener('keydown', (e) => {
     if (keys.hasOwnProperty(e.key)) {
@@ -176,8 +178,11 @@ function gameLoop() {
     }
     requestAnimationFrame(gameLoop);
 }
+//数值刷新
 setInterval(()=>{
-    const length=protect_time/2+'px';
+    const weightlenth=(5-centry.speed)*20+'%';
+    const length=protect_time/10+'%';
+    white_weight.style.width=weightlenth;
     show_protect_time.style.width=length;
     protectcircle.r=centry.size+20;
     if(protect_time>0)protect_time--;

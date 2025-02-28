@@ -34,8 +34,40 @@ canvas {
     left: 10%;
     top: 20%;
 }
+#show-pro{
+    width: 20%;
+    height: 75px;
+    position: fixed;
+    top: 30%;
+}
+.lenth-out{
+    height: 25px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+}
 #protect-time{
     background-color: rgba(140, 253, 255, 0.5);
     height: 25px;
-    width: 200px;
+    width: 20%;
+}
+#weight{
+    width: 20%;
+    height: 75px;
+    position: fixed;
+    top: 40%;
+}
+#weight-lenth-border{
+    height: 25px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+}
+#weight-length{
+    background-color: tan;
+    height: 25px;
+    width: 0;
+    transition: 500ms;
 }
