@@ -5,7 +5,7 @@ const show_protect_time=document.getElementById('protect-time');
 const white_weight=document.getElementById('weight-length');
 const ending=document.getElementById('endingtext-area');
 const savedata=localStorage.getItem('history-memor');
-document.getElementById('history').innerHTML=savedata; 
+if(savedata!=null)document.getElementById('history').innerHTML=savedata;
 const g=0.05;
 var second=0,minute=0;
 var settime,timelen;
@@ -81,7 +81,11 @@ const keys = {
     ArrowDown: false,
     ArrowLeft: false,
     ArrowRight: false,
-    a:false
+    a:false,
+    w:false,
+    s:false,
+    d:false,
+    Enter:false
 };
 document.addEventListener('keydown', (e) => {
     if (keys.hasOwnProperty(e.key)) {
@@ -94,17 +98,20 @@ document.addEventListener('keyup', (e) => {
     }
 });
 function update() {
-    if (keys.ArrowUp && centry.y- centry.size> 0) {
+    if (keys.ArrowUp&& centry.y- centry.size> 0) {
         centry.y-=centry.speed;
     }
     if (keys.ArrowDown && centry.y + centry.size < canvas.height) {
         centry.y+=centry.speed;
     }
-    if (keys.ArrowLeft && centry.x- centry.size > 0) {
+    if (keys.ArrowLeft&& centry.x- centry.size > 0) {
         centry.x-=centry.speed;
     }
-    if (keys.ArrowRight && centry.x + centry.size < canvas.width) {
+    if (keys.ArrowRight&& centry.x + centry.size < canvas.width) {
         centry.x+=centry.speed;
+    }
+    if(keys.w){
+        start.click='true';
     }
 }
 
@@ -179,8 +186,8 @@ function gameLoop() {
         },2000);
         juge=0;
         eats.length=0;
-        if(savedata<temp){
-            localStorage.setItem('historymemor',temp);
+        if(savedata<temp||savedata===null){
+            localStorage.setItem('history-memor',temp);
         }
         clearInterval(settime);
         clearInterval(timelen);
